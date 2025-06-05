@@ -1,2 +1,4 @@
-#file:poetry.lock
-#file:pyproject.toml
+*.
+*.lock
+*.toml
+.gitignore
