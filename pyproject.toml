@@ -1,0 +1,20 @@
+[project]
+name = "visiualization"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "soldierHuang",email = "benitorhuang@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib (>=3.10.3,<4.0.0)",
+    "plotly (>=6.1.2,<7.0.0)",
+    "pandas (>=2.3.0,<3.0.0)",
+    "nbformat (>=5.10.4,<6.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
