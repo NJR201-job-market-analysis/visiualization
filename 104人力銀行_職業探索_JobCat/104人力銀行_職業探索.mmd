@@ -1,0 +1,67 @@
+sequenceDiagram
+    participant main as 主程式 (main)
+    participant Analyzer as JobNetworkAnalyzer 物件
+    participant FileSystem as 檔案系統
+    participant Libs as 視覺化套件<br/>(Pyvis/Pyecharts)
+
+    main->>Analyzer: 1. __init__(config)
+    activate Analyzer
+    note right of main: 建立分析器物件，<br/>僅設定屬性，不做重度運算。
+    Analyzer-->>main: (返回 Analyzer 實例)
+    deactivate Analyzer
+
+    rect rgb(235, 245, 255)
+        main->>Analyzer: 2. analyze()
+        activate Analyzer
+        note over Analyzer: 執行核心分析流程
+
+        Analyzer->>FileSystem: 2a. 讀取 CSV 檔案
+        activate FileSystem
+        FileSystem-->>Analyzer: (DataFrame 資料)
+        deactivate FileSystem
+
+        note over Analyzer: 2b. 內部執行 _prepare_entity_data()<br/>(計算技能/工具數量)
+        
+        note over Analyzer: 2c. 內部執行 _build_graph()<br/>(建立 NetworkX 圖)
+
+        Analyzer-->>main: (分析完成，Graph已建立)
+        deactivate Analyzer
+    end
+
+    rect rgb(255, 245, 235)
+        main->>Analyzer: 3. generate_network_html()
+        activate Analyzer
+        note over Analyzer: 產生網絡圖
+
+        Analyzer->>Libs: 3a. 使用 Pyvis 建立網絡圖物件
+        activate Libs
+        Libs-->>Analyzer: (HTML 內容)
+        deactivate Libs
+
+        Analyzer->>FileSystem: 3b. 寫入 network.html 檔案
+        activate FileSystem
+        FileSystem-->>Analyzer: (寫入成功)
+        deactivate FileSystem
+        
+        Analyzer-->>main: (網絡圖產出)
+        deactivate Analyzer
+    end
+
+    rect rgb(235, 255, 240)
+        main->>Analyzer: 4. generate_mind_map_html()
+        activate Analyzer
+        note over Analyzer: 產生心智圖
+
+        Analyzer->>Libs: 4a. 使用 Pyecharts 建立心智圖物件
+        activate Libs
+        Libs-->>Analyzer: (HTML 內容)
+        deactivate Libs
+
+        Analyzer->>FileSystem: 4b. 寫入 mind_map.html 檔案
+        activate FileSystem
+        FileSystem-->>Analyzer: (寫入成功)
+        deactivate FileSystem
+
+        Analyzer-->>main: (心智圖產出)
+        deactivate Analyzer
+    end
